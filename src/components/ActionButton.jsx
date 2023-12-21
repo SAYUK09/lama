@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import CreateProjectBtn from "./CreateProjectBtn";
 
 function ActionButton() {
-  const router = useRouter();
-
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const [name, setName] = useState("");
@@ -36,7 +34,11 @@ function ActionButton() {
 
   return (
     <div>
-      {!loginToken ? (
+      {loginToken ? (
+        <div>
+          <CreateProjectBtn />
+        </div>
+      ) : (
         <div>
           {!isLoginPopupOpen && (
             <button
@@ -74,10 +76,6 @@ function ActionButton() {
               </div>
             </div>
           )}
-        </div>
-      ) : (
-        <div>
-          <CreateProjectBtn />
         </div>
       )}
     </div>

@@ -1,41 +1,7 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CreateProjectBtn from "./CreateProjectBtn";
 
-function ProjectList() {
-  const [projects, setProjects] = useState([]);
-  const [loginToken, setLoginToken] = useState("");
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BE_URL}/projects?` +
-            new URLSearchParams({
-              userId: loginToken,
-            }),
-          {
-            method: "GET",
-          }
-        );
-
-        const data = await response.json();
-
-        console.log(data.projects, "dtaa");
-        setProjects([...data.projects]);
-      } catch (error) {
-        console.error("Login error:", error);
-      }
-    }
-    loginToken.length && fetchData();
-  }, [loginToken]);
-
-  useEffect(() => {
-    const loginToken = localStorage.getItem("loginToken");
-
-    setLoginToken(loginToken);
-  }, []);
-
+function ProjectList({ projects }) {
   function getTimeAgoStatus(timestamp) {
     const currentDate = new Date();
     const inputDate = new Date(timestamp);
@@ -77,10 +43,13 @@ function ProjectList() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
         {projects.map((project) => {
           return (
-            <div className="flex p-2 rounded-xl drop-shadow-lg border  border-solid border-gray-800  ">
+            <div
+              key={project._id}
+              className="flex px-2 py-1 rounded-xl items-center  drop-shadow-lg border  border-solid border-gray-800  "
+            >
               <div className="">
-                <div class="relative inline-flex items-center justify-center w-28 h-28 overflow-hidden bg-gray-100 rounded-md dark:bg-secondary">
-                  <span class="font-bold text-white text-3xl ">
+                <div className="relative inline-flex items-center justify-center w-28 h-28 overflow-hidden bg-gray-100 rounded-md dark:bg-secondary">
+                  <span className="font-bold text-white text-3xl ">
                     {getInitials(project.name)}
                   </span>
                 </div>
@@ -89,7 +58,6 @@ function ProjectList() {
               <div className="flex flex-col justify-between p-2">
                 <div className="mb-2">
                   <p className="text-primary font-bold text-lg">
-                    {" "}
                     {project.name}
                   </p>
                   <div>{`${project.descriptions.length} Episodes`}</div>

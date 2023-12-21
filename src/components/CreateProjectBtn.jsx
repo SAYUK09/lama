@@ -1,12 +1,11 @@
 "use client";
 import plusbtn from "../../public/assests/plus.svg";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function CreateProjectBtn() {
   const router = useRouter();
-
   const [projectName, setProjectName] = useState("");
   const [loginToken, setLoginToken] = useState("");
   const [isProjectPopupOpen, setIsProjectPopupOpen] = useState(false);
@@ -29,7 +28,6 @@ function CreateProjectBtn() {
 
       const data = await response.json();
       setIsProjectPopupOpen(false);
-      data && router.push("/project");
     } catch (error) {
       console.error("Login error:", error);
     }
