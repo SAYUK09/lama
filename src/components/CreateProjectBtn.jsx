@@ -46,7 +46,7 @@ function CreateProjectBtn() {
         <p className="px-2 text-lg">Create New Project</p>
       </button>
       {isProjectPopupOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-10">
           <div className="bg-white p-8 rounded-lg shadow-lg w-96">
             <h2 className="text-2xl font-bold mb-4">Create Project</h2>
 
