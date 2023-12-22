@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import logo from "../../public/assests/directright.svg";
+import { GlobalContextProvider } from "@/context/projectsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +21,7 @@ export default function RootLayout({ children }) {
             <p>LAMA.</p>
           </div>
         </nav>
-
-        {children}
+        <GlobalContextProvider>{children}</GlobalContextProvider>
       </body>
     </html>
   );

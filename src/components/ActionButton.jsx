@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import CreateProjectBtn from "./CreateProjectBtn";
+import { useGlobalContext } from "@/context/projectsContext";
 
 function ActionButton() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmailId] = useState("");
-  const [loginToken, setLoginToken] = useState("");
+
+  const { loginToken, setLoginToken } = useGlobalContext();
 
   useEffect(() => {
     const loginToken = localStorage.getItem("loginToken");

@@ -1,19 +1,14 @@
 "use client";
+import { useGlobalContext } from "@/context/projectsContext";
 import plusbtn from "../../public/assests/plus.svg";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 function CreateProjectBtn() {
-  const router = useRouter();
   const [projectName, setProjectName] = useState("");
-  const [loginToken, setLoginToken] = useState("");
-  const [isProjectPopupOpen, setIsProjectPopupOpen] = useState(false);
 
-  useEffect(() => {
-    const loginToken = localStorage.getItem("loginToken");
-    setLoginToken(loginToken);
-  }, []);
+  const [isProjectPopupOpen, setIsProjectPopupOpen] = useState(false);
+  const { setProjects, loginToken } = useGlobalContext();
 
   const createProject = async () => {
     try {
@@ -27,6 +22,7 @@ function CreateProjectBtn() {
       );
 
       const data = await response.json();
+      setProjects((project) => [...project, data]);
       setIsProjectPopupOpen(false);
     } catch (error) {
       console.error("Login error:", error);

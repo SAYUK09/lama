@@ -1,42 +1,13 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import heroImg from "../../public/assests/hero.svg";
 import ActionButton from "@/components/ActionButton";
 import ProjectList from "./ProjectList";
+import { useGlobalContext } from "@/context/projectsContext";
 
 function HomeComponent() {
-  const [loginToken, setLoginToken] = useState("");
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    const loginToken = localStorage.getItem("loginToken");
-    setLoginToken(loginToken);
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BE_URL}/projects?` +
-            new URLSearchParams({
-              userId: loginToken,
-            }),
-          {
-            method: "GET",
-          }
-        );
-
-        const data = await response.json();
-
-        console.log(data.projects, "dtaa");
-        setProjects([...data.projects]);
-      } catch (error) {
-        console.error("Login error:", error);
-      }
-    }
-    loginToken && loginToken.length && fetchData();
-  }, [loginToken]);
+  const { projects } = useGlobalContext();
 
   return (
     <div>
