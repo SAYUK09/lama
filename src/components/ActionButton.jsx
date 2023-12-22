@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import CreateProjectBtn from "./CreateProjectBtn";
-import { useGlobalContext } from "@/context/projectsContext";
+import { useGlobalContext } from "@/context/globalContext";
 
 function ActionButton() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);

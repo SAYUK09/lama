@@ -4,7 +4,7 @@ import Image from "next/image";
 import heroImg from "../../public/assests/hero.svg";
 import ActionButton from "@/components/ActionButton";
 import ProjectList from "./ProjectList";
-import { useGlobalContext } from "@/context/projectsContext";
+import { useGlobalContext } from "@/context/globalContext";
 
 function HomeComponent() {
   const { projects } = useGlobalContext();

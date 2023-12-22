@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalContext } from "@/context/projectsContext";
+import { useGlobalContext } from "@/context/globalContext";
 import plusbtn from "../../public/assests/plus.svg";
 import Image from "next/image";
 import React, { useState } from "react";
