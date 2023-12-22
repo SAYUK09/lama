@@ -17,7 +17,12 @@ function HomeComponent() {
             Create a New Project
           </h3>
           <div className="p-4 my-4 flex items-center justify-center">
-            <Image src={heroImg} width={500} height={500}></Image>
+            <Image
+              src={heroImg}
+              width={500}
+              height={500}
+              alt="hero image"
+            ></Image>
           </div>
           <p className="text-lg">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores

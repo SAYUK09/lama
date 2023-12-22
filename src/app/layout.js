@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <nav className="p-4 m-2">
           <div className="flex items-center text-primary font-bold text-3xl">
-            <Image width={50} height={50} src={logo}></Image>
+            <Image width={50} height={50} src={logo} alt="nav logo"></Image>
             <p>LAMA.</p>
           </div>
         </nav>
