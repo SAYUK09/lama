@@ -1,5 +1,6 @@
 import React from "react";
 import CreateProjectBtn from "./CreateProjectBtn";
+import Link from "next/link";
 
 function ProjectList({ projects }) {
   function getTimeAgoStatus(timestamp) {
@@ -43,31 +44,32 @@ function ProjectList({ projects }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
         {projects.map((project) => {
           return (
-            <div
-              key={project._id}
-              className="flex px-2 py-1 rounded-xl items-center  drop-shadow-lg border  border-solid border-gray-800  "
-            >
-              <div className="">
-                <div className="relative inline-flex items-center justify-center w-28 h-28 overflow-hidden bg-gray-100 rounded-md dark:bg-secondary">
-                  <span className="font-bold text-white text-3xl ">
-                    {getInitials(project.name)}
-                  </span>
+            <Link href={`/project/${project._id}`}>
+              <div
+                key={project._id}
+                className="flex p-2 rounded-xl items-center  drop-shadow-lg border  border-solid border-gray-800  "
+              >
+                <div className="">
+                  <div className="relative inline-flex items-center justify-center w-28 h-28 overflow-hidden bg-gray-100 rounded-md dark:bg-secondary">
+                    <span className="font-bold text-white text-3xl ">
+                      {getInitials(project.name)}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between p-2">
+                  <div className="mb-2">
+                    <p className="text-primary font-bold text-lg">
+                      {project.name}
+                    </p>
+                    <div>{`${project.descriptions.length} Episodes`}</div>
+                  </div>
+
+                  <p className="text-gray-500">{`last edited ${getTimeAgoStatus(
+                    project.updatedAt
+                  )}`}</p>
                 </div>
               </div>
-
-              <div className="flex flex-col justify-between p-2">
-                <div className="mb-2">
-                  <p className="text-primary font-bold text-lg">
-                    {project.name}
-                  </p>
-                  <div>{`${project.descriptions.length} Episodes`}</div>
-                </div>
-
-                <p className="text-gray-500">{`last edited ${getTimeAgoStatus(
-                  project.updatedAt
-                )}`}</p>
-              </div>
-            </div>
+            </Link>
           );
         })}
       </div>
