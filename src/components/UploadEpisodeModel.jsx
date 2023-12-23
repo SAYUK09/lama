@@ -7,6 +7,8 @@ import { useGlobalContext } from "@/context/globalContext";
 function UploadEpisodeModel({ img, source, handleModelState }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const { setProjects } = useGlobalContext();
+
   const params = useParams();
 
   const { loginToken } = useGlobalContext();
@@ -28,8 +30,8 @@ function UploadEpisodeModel({ img, source, handleModelState }) {
       );
 
       const data = await response.json();
-
-      handleModelState(false);
+      setProjects([...data]);
+      data && handleModelState(false);
     } catch (error) {
       console.error("Login error:", error);
     }
