@@ -77,7 +77,7 @@ function ProjectComponent() {
                     </div>
                     <div className={` border-y border-slate-300 p-4 `}>
                       <Link
-                        href={`episodes/${episode._id}/transcript`}
+                        href={`${params.id}/transcription/${episode._id}`}
                         className="border rounded-l-lg border-slate-400 p-2"
                       >
                         Edit
