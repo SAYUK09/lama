@@ -1,5 +1,4 @@
 "use client";
-import { useGlobalContext } from "@/context/globalContext";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import editIcon from "../../public/assests/mode.svg";
@@ -7,28 +6,51 @@ import Image from "next/image";
 
 function EpisodeComponent() {
   const params = useParams();
-  const { projects } = useGlobalContext();
 
   const [disabled, setDisabled] = useState(true);
   const [transcript, setTranscript] = useState("");
+  const [descriptionObj, setDescriptionObj] = useState({});
 
-  const activeProject = projects.filter((item) => item._id === params.id)[0];
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BE_URL}/transcription?` +
+          new URLSearchParams({
+            descriptionId: params.episodeId,
+          }),
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await response.json();
+      data && setTranscript(data.description.description);
+      data && setDescriptionObj(data.description);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  }
 
   useEffect(() => {
-    const activeDescription =
-      activeProject &&
-      activeProject.descriptions.filter(
-        (item) => item._id === params.episodeId
-      )[0];
+    fetchData();
+  }, []);
 
-    activeDescription && setTranscript(activeDescription.description);
-  }, [activeProject]);
-
-  const activeDescription =
-    activeProject &&
-    activeProject.descriptions.filter(
-      (item) => item._id === params.episodeId
-    )[0];
+  async function updateDescription() {
+    console.log({ ...descriptionObj, description: transcript }, "dop");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BE_URL}/transcription?` +
+        new URLSearchParams({
+          descriptionId: params.episodeId,
+        }),
+      {
+        method: "PATCH",
+        body: JSON.stringify({ ...descriptionObj, description: transcript }),
+        headers: { "Content-Type": "application/json" }, // Add this header
+      }
+    );
+    const data = await response.json();
+    data && setDisabled(true);
+  }
 
   return (
     <div>
@@ -38,13 +60,16 @@ function EpisodeComponent() {
         {!disabled && (
           <div className="flex gap-2">
             <button
-              onClick={() => {}}
+              onClick={() => {
+                fetchData();
+                setDisabled(true);
+              }}
               className="border border-red-500 text-red-500 px-2 py-1 rounded-md font-semibold hover:bg-red-500 hover:text-white transition-all duration-300 ease-in-out"
             >
               Discard
             </button>
             <button
-            //   onClick={}
+              onClick={updateDescription}
               className="bg-black text-white px-2 py-1 rounded-md hover:shadow-lg"
             >
               Save & Exit
@@ -74,7 +99,6 @@ function EpisodeComponent() {
           ></textarea>
         </div>
       </div>
-      EpisodeComponent
     </div>
   );
 }
