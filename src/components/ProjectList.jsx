@@ -44,7 +44,7 @@ function ProjectList({ projects }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
         {projects.map((project) => {
           return (
-            <Link href={`/project/${project._id}`}>
+            <Link key={project._id} href={`/project/${project._id}`}>
               <div
                 key={project._id}
                 className="flex p-2 rounded-xl items-center  drop-shadow-lg border  border-solid border-gray-800  "

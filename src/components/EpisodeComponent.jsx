@@ -1,15 +1,24 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import editIcon from "../../public/assests/mode.svg";
 import Image from "next/image";
+import Breadcrumbs from "./Breadcrumbs";
+import { useGlobalContext } from "@/context/globalContext";
 
 function EpisodeComponent() {
+  const pathname = usePathname();
   const params = useParams();
+
+  const { projects } = useGlobalContext();
 
   const [disabled, setDisabled] = useState(true);
   const [transcript, setTranscript] = useState("");
   const [descriptionObj, setDescriptionObj] = useState({});
+
+  const project = projects.filter((item) => item._id === params.id)[0];
+
+  const projectName = project && project.name;
 
   async function fetchData() {
     try {
@@ -52,8 +61,16 @@ function EpisodeComponent() {
     data && setDisabled(true);
   }
 
+  const breadcrumbs = [
+    { title: projectName, href: `/project/${params.id}` },
+    { title: "Transcript", href: { pathname } },
+  ];
+
   return (
     <div>
+      <div className="mb-8">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
       <div className="flex items-center justify-between">
         <h3 className="text-primary text-3xl font-bold">Edit Transcription</h3>
 

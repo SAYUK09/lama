@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import youtubeIcon from "../../public/assests/yt.svg";
 import spotifyIcon from "../../public/assests/spotify.svg";
 import blankSpot from "../../public/assests/spot.svg";
@@ -9,9 +9,12 @@ import UploadCard from "./UploadCard";
 import Link from "next/link";
 import Dropbox from "./Dropbox";
 import { useGlobalContext } from "@/context/globalContext";
+import Breadcrumbs from "./Breadcrumbs";
 
 function ProjectComponent() {
   const { projects } = useGlobalContext();
+
+  const pathname = usePathname();
   const params = useParams();
 
   const activeProject = projects.filter((item) => item._id === params.id)[0];
@@ -27,8 +30,17 @@ function ProjectComponent() {
     return `${monthAbbr} ${day} ${year} | ${time}`;
   }
 
+  const breadcrumbs = [
+    { title: activeProject?.name, href: `/project/${params.id}` },
+    { title: "Upload", href: { pathname } },
+  ];
+
   return (
     <div>
+      <div className="mb-8">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
+
       {activeProject &&
       activeProject.descriptions &&
       activeProject.descriptions.length ? (
@@ -64,7 +76,10 @@ function ProjectComponent() {
               {activeProject.descriptions?.map((episode) => {
                 return (
                   <>
-                    <div className={`border-y border-slate-300 p-4`}>
+                    <div
+                      key={episode._id}
+                      className={`border-y border-slate-300 p-4`}
+                    >
                       <span className=" p-2">{episode.title}</span>
                     </div>
                     <div className=" border-y border-slate-300 p-4">
