@@ -61,7 +61,7 @@ function ProjectList({ projects }) {
                     <p className="text-primary font-bold text-lg">
                       {project.name}
                     </p>
-                    <div>{`${project.descriptions.length} Episodes`}</div>
+                    <div>{`${project.descriptions?.length} Episodes`}</div>
                   </div>
 
                   <p className="text-gray-500">{`last edited ${getTimeAgoStatus(

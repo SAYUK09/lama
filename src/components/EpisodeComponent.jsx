@@ -23,7 +23,7 @@ function EpisodeComponent() {
   async function fetchData() {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BE_URL}/transcription?` +
+        `${process.env.NEXT_PUBLIC_BE_URL}/descriptions?` +
           new URLSearchParams({
             descriptionId: params.episodeId,
           }),
@@ -47,7 +47,7 @@ function EpisodeComponent() {
   async function updateDescription() {
     console.log({ ...descriptionObj, description: transcript }, "dop");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BE_URL}/transcription?` +
+      `${process.env.NEXT_PUBLIC_BE_URL}/descriptions?` +
         new URLSearchParams({
           descriptionId: params.episodeId,
         }),

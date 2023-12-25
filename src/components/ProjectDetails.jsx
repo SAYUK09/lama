@@ -4,7 +4,7 @@ import youtubeIcon from "../../public/assests/yt.svg";
 import spotifyIcon from "../../public/assests/spotify.svg";
 import blankSpot from "../../public/assests/spot.svg";
 import rssIcon from "../../public/assests/rss.svg";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UploadCard from "./UploadCard";
 import Link from "next/link";
 import Dropbox from "./Dropbox";
@@ -14,10 +14,16 @@ import Breadcrumbs from "./Breadcrumbs";
 function ProjectComponent() {
   const { projects } = useGlobalContext();
 
+  const [project, setProject] = useState({});
+
   const pathname = usePathname();
   const params = useParams();
 
-  const activeProject = projects.filter((item) => item._id === params.id)[0];
+  useEffect(() => {
+    const activeProject = projects?.filter((item) => item._id === params.id)[0];
+
+    setProject(activeProject);
+  }, [params.id, projects]);
 
   function formatTimestamp(timestamp) {
     const dt = new Date(timestamp);
@@ -30,8 +36,34 @@ function ProjectComponent() {
     return `${monthAbbr} ${day} ${year} | ${time}`;
   }
 
+  async function handleDeleteDescription(descriptionId) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BE_URL}/descriptions?` +
+          new URLSearchParams({
+            descriptionId: descriptionId,
+          }),
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      data.status == 200 &&
+        setProject((prevProject) => ({
+          ...prevProject,
+          descriptions: prevProject.descriptions.filter(
+            (item) => item._id !== descriptionId
+          ),
+        }));
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  }
+
   const breadcrumbs = [
-    { title: activeProject?.name, href: `/project/${params.id}` },
+    { title: project?.name, href: `/project/${params.id}` },
     { title: "Upload", href: { pathname } },
   ];
 
@@ -41,14 +73,10 @@ function ProjectComponent() {
         <Breadcrumbs items={breadcrumbs} />
       </div>
 
-      {activeProject &&
-      activeProject.descriptions &&
-      activeProject.descriptions.length ? (
+      {project?.descriptions?.length ? (
         <div>
           <div className="mb-8">
-            <h1 className="text-primary text-3xl font-bold">
-              {activeProject.name}
-            </h1>
+            <h1 className="text-primary text-3xl font-bold">{project.name}</h1>
           </div>
 
           <div className="grid grid-cols-3 gap-x-16 gap-y-6">
@@ -73,7 +101,7 @@ function ProjectComponent() {
               <div className="p-4 font-semibold">Upload Date & Time</div>
               <div className="p-4 font-semibold">Status</div>
               <div className="p-4 font-semibold">Actions</div>
-              {activeProject.descriptions?.map((episode) => {
+              {project.descriptions?.map((episode) => {
                 return (
                   <>
                     <div
@@ -98,7 +126,7 @@ function ProjectComponent() {
                         Edit
                       </Link>
                       <span
-                        onClick={() => handleDeleteEpisode(episode._id)}
+                        onClick={() => handleDeleteDescription(episode._id)}
                         className="border-y cursor-pointer border-r rounded-r-lg text-red-500 border-slate-400 p-2 hover:bg-red-500 hover:text-white transition-all duration-200 ease-in-out"
                       >
                         Delete
