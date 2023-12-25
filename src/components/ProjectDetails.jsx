@@ -10,6 +10,7 @@ import Link from "next/link";
 import Dropbox from "./Dropbox";
 import { useGlobalContext } from "@/context/globalContext";
 import Breadcrumbs from "./Breadcrumbs";
+import Sidebar from "./Sidebar";
 
 function ProjectComponent() {
   const { projects } = useGlobalContext();
@@ -67,95 +68,114 @@ function ProjectComponent() {
     { title: "Upload", href: { pathname } },
   ];
 
+  const sidebarItems = [
+    {
+      name: "Project",
+      href: `/project/${params.id}`,
+      isActive: true,
+    },
+    {
+      name: "Widget Configuration",
+      href: `/project/${params.id}/widget`,
+      isActive: false,
+    },
+  ];
+
   return (
-    <div>
-      <div className="mb-8">
-        <Breadcrumbs items={breadcrumbs} />
-      </div>
+    <div className="flex p-10 justify-between">
+      <Sidebar sidebarItems={sidebarItems} />
 
-      {project?.descriptions?.length ? (
-        <div>
-          <div className="mb-8">
-            <h1 className="text-primary text-3xl font-bold">{project.name}</h1>
-          </div>
-
-          <div className="grid grid-cols-3 gap-x-16 gap-y-6">
-            <UploadCard img={youtubeIcon} source={"Youtube Video"} />
-            <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
-            <UploadCard img={blankSpot} source={"Text File"} />
-          </div>
-
-          <div className="bg-primary rounded-md text-white p-2 px-8 my-8 font-bold">
-            <div className="flex justify-between items-center">
-              <p>All files are processed! Your widget is ready to go!</p>
-
-              <button className="px-4 py-2 rounded-md bg-white text-black">
-                Try it out!
-              </button>
-            </div>
-          </div>
-
-          <div className="my-4 shadow-md shadow-gray-800  border rounded-lg border-gray-500">
-            <div className="grid grid-cols-4 justify-center items-center auto-rows-auto p-2 ">
-              <div className="p-4 font-semibold">Name</div>
-              <div className="p-4 font-semibold">Upload Date & Time</div>
-              <div className="p-4 font-semibold">Status</div>
-              <div className="p-4 font-semibold">Actions</div>
-              {project.descriptions?.map((episode) => {
-                return (
-                  <>
-                    <div
-                      key={episode._id}
-                      className={`border-y border-slate-300 p-4`}
-                    >
-                      <span className=" p-2">{episode.title}</span>
-                    </div>
-                    <div className=" border-y border-slate-300 p-4">
-                      <span className="border p-2">
-                        {formatTimestamp(episode.updatedAt)}
-                      </span>
-                    </div>
-                    <div className=" border-y border-slate-300 p-4">
-                      <span className="border p-2">Done</span>
-                    </div>
-                    <div className={` border-y border-slate-300 p-4 `}>
-                      <Link
-                        href={`${params.id}/transcription/${episode._id}`}
-                        className="border rounded-l-lg border-slate-400 p-2"
-                      >
-                        Edit
-                      </Link>
-                      <span
-                        onClick={() => handleDeleteDescription(episode._id)}
-                        className="border-y cursor-pointer border-r rounded-r-lg text-red-500 border-slate-400 p-2 hover:bg-red-500 hover:text-white transition-all duration-200 ease-in-out"
-                      >
-                        Delete
-                      </span>
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-          </div>
+      <div className=" w-3/4 justify-center items-center mx-24">
+        <div className="mb-8">
+          <Breadcrumbs items={breadcrumbs} />
         </div>
-      ) : (
-        <div>
-          <div className="grid grid-cols-3 gap-x-16 gap-y-6">
-            <UploadCard img={youtubeIcon} source={"Youtube Video"} />
-            <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
-            <UploadCard img={rssIcon} source={"Spotify Feed"} />
-            <UploadCard img={youtubeIcon} source={"Youtube Video"} />
-            <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
-            <UploadCard img={rssIcon} source={"Spotify Feed"} />
-          </div>
-          <div className="my-8 flex items-center justify-center">
-            <p>Or</p>
-          </div>
+
+        {project?.descriptions?.length ? (
           <div>
-            <Dropbox />
+            <div className="mb-8">
+              <h1 className="text-primary text-3xl font-bold">
+                {project.name}
+              </h1>
+            </div>
+
+            <div className="grid grid-cols-3 gap-x-16 gap-y-6">
+              <UploadCard img={youtubeIcon} source={"Youtube Video"} />
+              <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
+              <UploadCard img={blankSpot} source={"Text File"} />
+            </div>
+
+            <div className="bg-primary rounded-md text-white p-2 px-8 my-8 font-bold">
+              <div className="flex justify-between items-center">
+                <p>All files are processed! Your widget is ready to go!</p>
+
+                <button className="px-4 py-2 rounded-md bg-white text-black">
+                  Try it out!
+                </button>
+              </div>
+            </div>
+
+            <div className="my-4 shadow-md shadow-gray-800  border rounded-lg border-gray-500">
+              <div className="grid grid-cols-4 justify-center items-center auto-rows-auto p-2 ">
+                <div className="p-4 font-semibold">Name</div>
+                <div className="p-4 font-semibold">Upload Date & Time</div>
+                <div className="p-4 font-semibold">Status</div>
+                <div className="p-4 font-semibold">Actions</div>
+                {project.descriptions?.map((episode) => {
+                  return (
+                    <>
+                      <div
+                        key={episode._id}
+                        className={`border-y border-slate-300 p-4`}
+                      >
+                        <span className=" p-2">{episode.title}</span>
+                      </div>
+                      <div className=" border-y border-slate-300 p-4">
+                        <span className="border p-2">
+                          {formatTimestamp(episode.updatedAt)}
+                        </span>
+                      </div>
+                      <div className=" border-y border-slate-300 p-4">
+                        <span className="border p-2">Done</span>
+                      </div>
+                      <div className={` border-y border-slate-300 p-4 `}>
+                        <Link
+                          href={`${params.id}/transcription/${episode._id}`}
+                          className="border rounded-l-lg border-slate-400 p-2"
+                        >
+                          Edit
+                        </Link>
+                        <span
+                          onClick={() => handleDeleteDescription(episode._id)}
+                          className="border-y cursor-pointer border-r rounded-r-lg text-red-500 border-slate-400 p-2 hover:bg-red-500 hover:text-white transition-all duration-200 ease-in-out"
+                        >
+                          Delete
+                        </span>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div>
+            <div className="grid grid-cols-3 gap-x-16 gap-y-6">
+              <UploadCard img={youtubeIcon} source={"Youtube Video"} />
+              <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
+              <UploadCard img={rssIcon} source={"Spotify Feed"} />
+              <UploadCard img={youtubeIcon} source={"Youtube Video"} />
+              <UploadCard img={spotifyIcon} source={"Spotify Podcast"} />
+              <UploadCard img={rssIcon} source={"Spotify Feed"} />
+            </div>
+            <div className="my-8 flex items-center justify-center">
+              <p>Or</p>
+            </div>
+            <div>
+              <Dropbox />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
