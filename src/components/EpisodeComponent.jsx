@@ -54,7 +54,7 @@ function EpisodeComponent() {
       {
         method: "PATCH",
         body: JSON.stringify({ ...descriptionObj, description: transcript }),
-        headers: { "Content-Type": "application/json" }, // Add this header
+        headers: { "Content-Type": "application/json" },
       }
     );
     const data = await response.json();
