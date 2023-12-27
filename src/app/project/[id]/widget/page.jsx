@@ -85,11 +85,9 @@ function WidgetPage() {
               </div>
             </div>
 
-            {configurationState == "General" && (
-              <GeneralConfig/>
-            )}
+            {configurationState == "General" && <GeneralConfig />}
 
-            {configurationState == "Display" &&<DisplayConfig/>}
+            {configurationState == "Display" && <DisplayConfig project={activeProject} />}
           </div>
         </div>
       </div>
